@@ -9,6 +9,8 @@ os.system('cls')
 availableSnipes = []
 error = False
 
+version = "1.0.2"
+
 lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
          'w', 'x', 'y', 'z']
 dbl = ['aa', 'bb', 'cc', 'dd', 'ee', 'ff', 'gg', 'hh', 'ii', 'jj', 'kk', 'll', 'mm', 'nn', 'oo', 'pp', 'qq', 'rr', 'ss',
@@ -33,7 +35,7 @@ minerals = ["dirt", "stone", "rock", "sand", "water", "lava", "fire", "copper", 
 rbxstudio = ["model", "mesh", "part", "audio", "tool", "decal", "image", "script", "lua", "value", "string", "studio",
              "union", "asset", "id", "module", "local"]
 greatname = ["roblox", "hex", "mod", "telamon", "builderman", "tix", "diamond", "epic"]
-
+colors = [Fore.RED, Fore.GREEN, Fore.CYAN, Fore.YELLOW]
 
 def validate_username(username):
     url = f"https://auth.roblox.com/v1/usernames/validate?birthday=2006-09-21T07:00:00.000Z&context=Signup&username={username}"
@@ -57,12 +59,13 @@ def validate_username(username):
 
 def onstart():
     global error
+    randomColor = random.choice(colors)
     print(" ")
-    print(f"{Fore.CYAN} [ DuckSnipe Local ]{Style.RESET_ALL}")
+    print(f"{randomColor} [ DuckSnipe - {version} ]{Style.RESET_ALL}")
     print(" ")
     print(" do cmds for all roblox name snipe commands.")
     print(" ")
-    cmd = input(f"{Fore.RED}==> {Style.RESET_ALL}")
+    cmd = input(f"{randomColor}==> {Style.RESET_ALL}")
     print(" ")
 
     splitcmd = cmd.split(" ")
@@ -76,6 +79,8 @@ def onstart():
         print("genkey [type] [key] - Generate Untaken Names with a keyword.")
         print("check [name] - Check Name for availability.")
         print("pass [name] - Generates & saves a password for an account.")
+        print("addacc [username] [password] - Saves account to snipe storage.")
+        print("storage - Shows all your saved users.")
         print("")
         print("[ Terms ]")
         print(" ")
@@ -112,6 +117,8 @@ def onstart():
                 print("minerals [key] - Generates names with minerals and your key.")
                 print("great [key] - Generates names with well-known keywords and your key.")
                 print("key** - Generates 2 letters after the key. (ex: keyAA)")
+                print("key* - Generates a letter after the key. (ex: keyA)")
+                print("*_key - Generates a letter before the key but with an _ (ex: A_key)")
                 print("#_key - Generates 1 num before the key 0-9 but with an _ (ex: 0_key)")
                 print("")
                 input("Press Enter to go back. ")
@@ -171,6 +178,16 @@ def onstart():
                     validate_username(str(a) + "_" + splitcmd[2])
                 for a in range(0, 10):
                     validate_username(splitcmd[2] + "_" + str(a))
+            if splitcmd[1] == "*_key":
+                for a in lower:
+                    validate_username(str(a) + "_" + splitcmd[2])
+                for a in lower:
+                    validate_username(splitcmd[2] + "_" + str(a))
+            if splitcmd[1] == "key*":
+                for i in lower:
+                    validate_username(splitcmd[2] + i)
+                for i in lower:
+                    validate_username(i + splitcmd[2])
             if splitcmd[1] == "key**":
                 for i in dbl:
                     validate_username(splitcmd[2] + i)
@@ -182,6 +199,21 @@ def onstart():
             time.sleep(3)
             os.system('cls')
             onstart()
+
+    if cmd == "storage":
+        try:
+            print("")
+            print(f"{Fore.CYAN}[ Your saved users ]{Style.RESET_ALL}")
+            print("")
+            f = open("users.txt", "r")
+            print(f.read())
+        except FileNotFoundError:
+            print("")
+            print(f"{Fore.RED}No saved users found.{Style.RESET_ALL}")
+        print("")
+        input("Press Enter to go back.")
+        os.system('cls')
+        onstart()
 
     if splitcmd[0] == "gen":
         try:
@@ -260,7 +292,28 @@ def onstart():
             os.system('cls')
             onstart()
 
+    if splitcmd[0] == "addacc":
+        try:
+            with open('users.txt', 'a') as file:
+                file.write(splitcmd[1] + " : " + splitcmd[2] + "\n")
+            print(" ")
+            print(f"{Fore.GREEN}[ Added account '{splitcmd[1]}' to snipe storage! ]{Style.RESET_ALL}")
+            print("")
+            print(f"{Fore.YELLOW}-=- Info -=-{Style.RESET_ALL}")
+            print(f"Username: {splitcmd[1]}")
+            print(f"Password: {splitcmd[2]}")
+            print("")
+            input("Press Enter to go back.")
+            os.system('cls')
+            onstart()
+        except IndexError:
+            print(f"{Fore.RED} Something went wrong. Did you forget an argument?{Style.RESET_ALL}")
+            time.sleep(3)
+            os.system('cls')
+            onstart()
+
     nocommand = ["check", "cmds", "pass"]
+    yescommand = ["gen", "gens", "genkey"]
     if not splitcmd[0] in nocommand:
         if availableSnipes:
             print(" ")
@@ -276,12 +329,20 @@ def onstart():
             onstart()
         else:
             if not error:
-                print(" ")
-                print(f"All generated users are {Fore.RED}taken{Style.RESET_ALL} :[")
-                time.sleep(3)
-                availableSnipes.clear()
-                os.system('cls')
-                onstart()
+                if splitcmd[0] in yescommand:
+                    print(" ")
+                    print(f"All generated users are {Fore.RED}taken{Style.RESET_ALL} :[")
+                    time.sleep(2.5)
+                    availableSnipes.clear()
+                    os.system('cls')
+                    onstart()
+                else:
+                    print(" ")
+                    print(f"{Fore.RED}Unknown command:{Style.RESET_ALL} {splitcmd[0]}")
+                    time.sleep(1)
+                    availableSnipes.clear()
+                    os.system('cls')
+                    onstart()
 
 if __name__ == "__main__":
     onstart()
