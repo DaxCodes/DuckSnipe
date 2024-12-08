@@ -27,7 +27,7 @@ wordlist = ["verified", "public", "sound", "un", "war", "star", "course", "glitc
             "duck", "ducky", "snipe", "rifle", "god", "angel", "ground", "grass", "internet", "social", "socially",
             "google", "guilded", "web", "hunt", "cute", "skull", "legal", "legally", "mc", "legal", "wild", "crazy",
             "dox", "bin", "ban", "banned", "banish", "banished", "og", "roblox", "swat", "epic", "epik", "sent", "tix",
-            "module", "local", "bot", "bucket", "secret", "weapon"]
+            "module", "local", "bot", "bucket", "secret", "weapon", "storage", "wish", "wind", "whole", "plays", "forest", "sub", "leave", "pole", "pong", "like", "live", "quant", "count", "let", "fork", "reduce", "bacon", "limited", "unlimited", "fix", "fixed", "broken", "shattered"]
 minerals = ["dirt", "stone", "rock", "sand", "water", "lava", "fire", "copper", "rain", "ruby", "diamond", "sapphire",
             "gem", "mud", "earth", "air"]
 rbxstudio = ["model", "mesh", "part", "audio", "tool", "decal", "image", "script", "lua", "value", "string", "studio",
