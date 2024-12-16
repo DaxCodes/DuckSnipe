@@ -1,5 +1,5 @@
 @echo off
-title DuckSnipe Local - 1.0.2
+title DuckSnipe Local - 1.0.3
 echo [ Loading DuckSnipe Local... ]
-py main.py
+python main.py
 pause
