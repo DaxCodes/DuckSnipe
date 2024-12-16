@@ -9,7 +9,7 @@ os.system('cls')
 availableSnipes = []
 error = False
 
-version = "1.0.2"
+version = "1.0.3"
 
 lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
          'w', 'x', 'y', 'z']
@@ -32,10 +32,22 @@ wordlist = ["verified", "public", "sound", "un", "war", "star", "course", "glitc
             "module", "local", "bot", "bucket", "secret", "weapon", "storage", "wish", "wind", "whole", "plays", "forest", "sub", "leave", "pole", "pong", "like", "live", "quant", "count", "let", "fork", "reduce", "bacon", "limited", "unlimited", "fix", "fixed", "broken", "shattered"]
 minerals = ["dirt", "stone", "rock", "sand", "water", "lava", "fire", "copper", "rain", "ruby", "diamond", "sapphire",
             "gem", "mud", "earth", "air"]
-rbxstudio = ["model", "mesh", "part", "audio", "tool", "decal", "image", "script", "lua", "value", "string", "studio",
-             "union", "asset", "id", "module", "local"]
+rbxstudio = ["model", "mesh", "part", "audio", "tool", "decal", "animation", "collider", "constraint", "controller", "emitter", "keyframe", "material", "node", "physics", "render", "terrain", "texture", "UI", "workspace", "vector", "algorithm", "array", "boolean", "buffer", "class", "compiler", "coroutine", "debug", "enum", "iterator", "method", "namespace", "parameter", "recursive", "stack", "variable"]
 greatname = ["roblox", "hex", "mod", "telamon", "builderman", "tix", "diamond", "epic"]
+joblist = ["artists", "engineer", "worker", "painter", "job", "programmer", "coder", "teacher", "musician", "lawyer", "officer", "legislator"]
 colors = [Fore.RED, Fore.GREEN, Fore.CYAN, Fore.YELLOW]
+custom = [""]
+
+def syncWords():
+    global custom
+    try:
+        f = open("words.txt", "r")
+        customwords = f.read()
+        x = customwords.split(",")
+        x.remove('')
+        custom = x
+    except:
+        pass
 
 def validate_username(username):
     url = f"https://auth.roblox.com/v1/usernames/validate?birthday=2006-09-21T07:00:00.000Z&context=Signup&username={username}"
@@ -59,6 +71,8 @@ def validate_username(username):
 
 def onstart():
     global error
+    error = False
+    syncWords()
     randomColor = random.choice(colors)
     print(" ")
     print(f"{randomColor} [ DuckSnipe - {version} ]{Style.RESET_ALL}")
@@ -114,7 +128,10 @@ def onstart():
                 print("wordlist_ [key] - Generates names with wordlist and your key but with an _")
                 print("studio [key] - Generates names with roblox studio terms and your key.")
                 print("studio_ [key] - Generates names with roblox studio terms and your key but with an _")
+                print("jobs [key] - Generates names with jobs and your key.")
+                print("jobs_ [key] - Generates names with jobs and your key but with an _")
                 print("minerals [key] - Generates names with minerals and your key.")
+                print("custom [key] - Generates names with your custom wordlist and your key.")
                 print("great [key] - Generates names with well-known keywords and your key.")
                 print("key** - Generates 2 letters after the key. (ex: keyAA)")
                 print("key* - Generates a letter after the key. (ex: keyA)")
@@ -158,11 +175,26 @@ def onstart():
                     validate_username(splitcmd[2] + i)
                 for i in minerals:
                     validate_username(i + splitcmd[2])
+            if splitcmd[1] == "custom":
+                for i in custom:
+                    validate_username(splitcmd[2] + i)
+                for i in custom:
+                    validate_username(i + splitcmd[2])
             if splitcmd[1] == "great":
                 for i in greatname:
                     validate_username(splitcmd[2] + i)
                 for i in greatname:
                     validate_username(i + splitcmd[2])
+            if splitcmd[1] == "jobs":
+                for i in joblist:
+                    validate_username(splitcmd[2] + i)
+                for i in joblist:
+                    validate_username(i + splitcmd[2])
+            if splitcmd[1] == "jobs_":
+                for i in joblist:
+                    validate_username(splitcmd[2] + "_" + i)
+                for i in joblist:
+                    validate_username(i + "_" + splitcmd[2])
             if splitcmd[1] == "##key":
                 for a in range(10, 100):
                     validate_username(str(a) + splitcmd[2])
@@ -214,6 +246,23 @@ def onstart():
         input("Press Enter to go back.")
         os.system('cls')
         onstart()
+
+    if splitcmd[0] == "addword":
+        try:
+            with open('words.txt', 'a') as file:
+                file.write(splitcmd[1] + ",")
+            print("")
+            print(f"{Fore.CYAN}[ Saved word: {splitcmd[1]} to wordlist! ]{Style.RESET_ALL}")
+            print("")
+            time.sleep(3)
+            os.system('cls')
+            onstart()
+        except IndexError:
+            error = True
+            print(f"{Fore.RED} Something went wrong. Did you forget to add an argument?{Style.RESET_ALL}")
+            time.sleep(3)
+            os.system('cls')
+            onstart()
 
     if splitcmd[0] == "gen":
         try:
