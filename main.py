@@ -9,7 +9,7 @@ os.system('cls')
 availableSnipes = []
 error = False
 
-version = "1.0.3"
+version = "1.0.4"
 
 lower = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
          'w', 'x', 'y', 'z']
@@ -122,8 +122,10 @@ def onstart():
             if splitcmd[1] == "key":
                 print("[ GenKey ]")
                 print(" ")
-                print("##key [key] - Generates 2 digits before the key 10-100")
-                print("#key [key] - Generates 1 num before the key 0-9")
+                print("##key [key] - Generates 2 digits BEFORE the key 10-100")
+                print("key## [key] - Generates 2 digits AFTER the key 10-100")
+                print("#key [key] - Generates 1 num BEFORE the key 0-9")
+                print("key# [key] - Generates 1 num AFTER the key 0-9")
                 print("wordlist [key] - Generates names with wordlist and your key.")
                 print("wordlist_ [key] - Generates names with wordlist and your key but with an _")
                 print("studio [key] - Generates names with roblox studio terms and your key.")
@@ -198,11 +200,13 @@ def onstart():
             if splitcmd[1] == "##key":
                 for a in range(10, 100):
                     validate_username(str(a) + splitcmd[2])
+            if splitcmd[1] == "key##":
                 for a in range(10, 100):
                     validate_username(splitcmd[2] + str(a))
             if splitcmd[1] == "#key":
                 for a in range(0, 10):
                     validate_username(str(a) + splitcmd[2])
+            if splitcmd[2] == "key#":
                 for a in range(0, 10):
                     validate_username(splitcmd[2] + str(a))
             if splitcmd[1] == "#_key":
